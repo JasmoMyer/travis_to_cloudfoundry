@@ -1,0 +1,11 @@
+---
+applications:
+- name: test-app
+  host: test-app
+  domain: staging.example.com
+  memory: 800M
+  disk_quota: 1024M
+  instances: 2
+  command: rackup config.ru
+  env:
+    RACK_ENV: staging

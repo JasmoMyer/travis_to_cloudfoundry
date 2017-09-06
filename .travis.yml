@@ -1,0 +1,41 @@
+sudo: false
+cache: bundler
+language: ruby
+
+branches:
+  only:
+  - master
+  - /live-deploy*/
+
+script:
+- bundle exec rspec --format=documentation --color
+
+env:
+  global:
+    - CF_API= # your Cloud Foundry API endpoint
+    - CF_ORGANIZATION= # your Cloud Foundry organization name
+    - CF_USERNAME= # your Cloud Foundry user name
+    - secure: # your Cloud Foundry password encrypted, see: https://docs.travis-ci.com/user/encryption-keys
+
+before_deploy:
+- find . -type f -perm 0444
+- export CF_TRACE=true
+
+deploy:
+  # 1. TO STAGING SPACE (continuously deploy here):
+  - provider: script
+    skip_cleanup: true
+    script: env CF_SPACE=staging CF_APP_NAME=test-app CF_MANIFEST=manifest-staging.yml ci/deploy_to_cf.sh
+    on:
+      repo: JasmoMyer/travis_to_cloudfoundry
+  # 2. TO LIVE SPACE (when 'live-deploy' tag is pushed to master):
+  - provider: script
+    skip_cleanup: true
+    script: env CF_SPACE=live CF_APP_NAME=test-app CF_MANIFEST=manifest-live.yml ci/deploy_to_cf.sh
+    on:
+      repo: JasmoMyer/travis_to_cloudfoundry
+      tags: true  
+
+after_deploy:
+  # It's possible to run smoke tests during the blue-green deploy (see comment in ci/zero_downtime.rb)
+  # Smoke tests could also be run here to verify all is well post blue-green deploy
