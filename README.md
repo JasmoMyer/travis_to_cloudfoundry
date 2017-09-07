@@ -1,7 +1,7 @@
 
 # Welcome
 
-This repo accompanies the following cruft.io [blog post](xxx).
+This repo accompanies the following cruft.io [blog post](http://cruft.io/posts/using-travis-ci-to-deploy-to-cloud-foundry).
 
 It demos how we got [Travis](https://travis-ci.org/) to deploy to [Cloud Foundry](https://www.cloudfoundry.org/).
 
@@ -15,4 +15,4 @@ It demos how we got [Travis](https://travis-ci.org/) to deploy to [Cloud Foundry
 
 * the Travis [script](https://docs.travis-ci.com/user/deployment/script) provider rather than the Travis [cloudfoundry](https://docs.travis-ci.com/user/deployment/cloudfoundry) provider (to afford a bit more control over smoke testing, etc)
 
-* blue-green-style deploys (I say 'style' because we don't go 'whole hog' and handle idempotency here, although you could, and there are various blue-green / zero-downtime scripts out there)
+* blue-green-style deploys (I say 'style' because we don't go 'whole hog' and take care of error-handling and idempotency here, although you could, and there are various blue-green / zero-downtime scripts out there that we reference in the accompanying post)
